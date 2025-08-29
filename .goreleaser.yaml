@@ -1,0 +1,84 @@
+version: 2
+
+project_name: kfast
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: kfast
+    main: ./kfast.go
+    binary: kfast
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.version={{ .Version }}
+      - -X main.commit={{ .Commit }}
+      - -X main.date={{ .Date }}
+      - -X main.builtBy=goreleaser
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+
+archives:
+  - id: kfast
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - tar.gz
+    files:
+      - LICENSE
+      - README.md
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: "checksums.txt"
+
+# Homebrew Tap formula
+brews:
+  - name: kfast
+    ids: [kfast]
+    commit_author:
+      name: "Dmitrii Kalashnikov"
+      email: "dim@maxcm.com"
+    repository:
+      owner: dmitrii-kalashnikov
+      name: homebrew-tap
+      branch: main
+    url_template: "https://github.com/dmitrii-kalashnikov/kfast/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    description: "Fast Kubernetes troubleshooting CLI"
+    homepage: "https://github.com/dmitrii-kalashnikov/kfast"
+    license: "MIT"
+    test: |
+      system "#{bin}/kfast", "--help"
+    install: |
+      bin.install "kfast"
+
+# Linux packages (deb/rpm)
+nfpms:
+  - id: linux-packages
+    package_name: kfast
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}"
+    formats: [deb, rpm]
+    section: utils
+    priority: optional
+    maintainer: "Dmitrii Kalashnikov <dim@maxcm.com>"
+    homepage: "https://github.com/dmitrii-kalashnikov/kfast"
+    license: MIT
+    suggests:
+      - kubectl
+    contents:
+      - src: ./dist/kfast*/kfast
+        dst: /usr/bin/kfast
+    overrides:
+      deb:
+        dependencies: [ca-certificates]
+      rpm:
+        dependencies: [ca-certificates]
+
+changelog:
+  use: github

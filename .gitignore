@@ -1,0 +1,55 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go build cache
+*.log
+*.prof
+*.coverprofile
+*.pprof
+*.syso
+
+# Go modules
+/vendor/
+/bin/
+/pkg/
+/Godeps/
+
+# Go workspace files (Go 1.18+)
+go.work
+go.work.sum
+
+# Build artifacts
+dist/
+release/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDEs/editors
+.vscode/
+.idea/
+*.iml
+
+# Dependency managers
+node_modules/
+
+# GoReleaser metadata (optional: keep if you want reproducibility)
+artifacts.json
+config.yaml
+metadata.json
+
+# Test outputs
+coverage.out
