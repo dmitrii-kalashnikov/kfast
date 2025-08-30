@@ -3,6 +3,8 @@
 **kfast** is a fast, lightweight Kubernetes troubleshooting CLI written in Go.  
 Scan your cluster in seconds and spot issues like pod failures, CrashLoopBackOffs, misconfigurations, missing resources, and more — all in a single command.
 
+![kfast demo](./assets/presenting_kfast.gif)
+
 ---
 
 ## ✨ Features
@@ -33,34 +35,23 @@ You can install **kfast** in several ways.
 ### 1) Quick Install (Linux/macOS)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dmitrii-kalashnikov/kfast/main/install.sh | bash
-```
-
-### 2) Manual Install from Source (Linux/macOS)
-
-```bash
-git clone https://github.com/dmitrii-kalashnikov/kfast.git
-cd kfast
-sudo make install
+git clone --depth 1 https://github.com/dmitrii-kalashnikov/kfast.git && cd kfast && sudo make install
 ```
 > This will build and place the binary into `/usr/local/bin/kfast`.
 
-### 3) Build Locally (All platforms)
+### 2) Build Locally (All platforms)
 
 ```bash
-git clone https://github.com/dmitrii-kalashnikov/kfast.git
-cd kfast
-go build -o kfast .
+git clone --depth 1 https://github.com/dmitrii-kalashnikov/kfast.git && cd kfast && go build -o kfast .
+
 # Optionally move it into your PATH:
 # sudo mv ./kfast /usr/local/bin/
 ```
 
-### 4) Windows (Build Locally)
+### 3) Windows (Build Locally)
 
 ```powershell
-git clone https://github.com/dmitrii-kalashnikov/kfast.git
-cd kfast
-go build -o kfast.exe .
+git clone https://github.com/dmitrii-kalashnikov/kfast.git; cd kfast; go build -o kfast.exe .
 # Add the repo folder (or the location of kfast.exe) to your PATH
 ```
 
@@ -98,26 +89,18 @@ Run a full scan on the current context:
 kfast
 ```
 
+Run a full scan on live mode:
+
+```bash
+kfast -live
+```
+
 Sample output:
 
-```
-🔍 Health Scan 12:51:25
-🖥️  Nodes: 4 ready / 4 total
-⚡ Scan completed in 677ms
+![kfast scan](./assets/showtime.png)
 
-📊 CLUSTER STATUS
-🚨 Critical: 10  ⚠️  Warning: 4
-
-📁 default [10🚨] [4⚠️]
-────────────────────────────────────────────────────────────────────────────────
-  🚨 Scheduler: configmap-missing-844dfdf9f7-mfbhb → SchedulingFailed
-    💭 Root Cause: Scheduling constraints not met
-    🔧 Fix Steps:
-      1. Review pod requirements: kubectl describe pod <name>
-      2. Check node taints/tolerations and resource requests/limits
-      3. Verify ConfigMap/Secrets references exist and are bound
-```
-
+#### Summary table
+![kfast scan](./assets/showtime_table.png)
 ---
 
 ## 🔐 RBAC
