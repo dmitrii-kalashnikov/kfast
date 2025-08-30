@@ -16,13 +16,30 @@ It helps you quickly detect cluster issues such as pod failures, CrashLoopBackOf
   - Certificate issues
   - And more…
 - 🖥️ Cross-platform: Linux, macOS, Windows  
-- ⚡ Installable via script, Homebrew (macOS/Linux), or Scoop (Windows)
+- ⚡ Multiple installation methods (script, Makefile, Homebrew, PowerShell)
 
 ---
 
 ## 🚀 Installation
 
-### Using install script (Linux/macOS)
-```bash
-curl -fsSL https://raw.githubusercontent.com/dmitrii-kalashnikov/kfast/master/install.sh | bash
+You can install `kfast` in several ways:
 
+### 1. Quick Install (Linux/macOS)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dmitrii-kalashnikov/kfast/main/install.sh | bash
+
+### 2. Manual Install from Source (Linux/macOS)
+
+```bash
+git clone https://github.com/dmitrii-kalashnikov/kfast.git
+cd kfast
+sudo make install
+
+### 3. Uninstall
+
+```bash
+sudo make uninstall
+
+### 🔧 Usage
+kfast --help

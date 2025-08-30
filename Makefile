@@ -1,9 +1,7 @@
 PROJECT_NAME := kfast
-PKG := github.com/OWNER/REPO
 COMMIT := $(shell git rev-parse --short HEAD)
 DATE := $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
 
-# Respect go.mod for toolchain; no hard-coded versions
 GOFLAGS := -trimpath
 LDFLAGS := -s -w \
   -X 'main.version=$${VERSION:-dev}' \
@@ -11,9 +9,22 @@ LDFLAGS := -s -w \
   -X 'main.date=$(DATE)' \
   -X 'main.builtBy=$${BUILT_BY:-local}'
 
+PREFIX ?= /usr/local
+BINDIR := $(PREFIX)/bin
+
 .PHONY: build
 build:
 	CGO_ENABLED=0 go build $(GOFLAGS) -ldflags "$(LDFLAGS)" -o bin/$(PROJECT_NAME) ./kfast.go
+
+.PHONY: install
+install: build
+	install -Dm755 bin/$(PROJECT_NAME) $(BINDIR)/$(PROJECT_NAME)
+	@echo "✅ Installed $(PROJECT_NAME) to $(BINDIR)/$(PROJECT_NAME)"
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(BINDIR)/$(PROJECT_NAME)
+	@echo "❌ Uninstalled $(PROJECT_NAME) from $(BINDIR)"
 
 .PHONY: build-all
 build-all:
